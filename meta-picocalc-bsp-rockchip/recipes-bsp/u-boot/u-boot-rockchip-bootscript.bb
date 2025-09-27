@@ -28,7 +28,7 @@ python do_create_boot_scr_sh() {
     with open(d.getVar("UBOOT_BOOTSCR_TEMPLATE"), "r") as f:
         bootScrTemplate = f.read()
 
-    bootScrPath = oe.path.join(d.getVar("UNPACKDIR"), "boot.scr.sh")
+    bootScrPath = d.getVar("UBOOT_BOOTSCR")
 
     args = {
     }
@@ -61,8 +61,8 @@ do_deploy() {
     install -D -m 0644 ${UBOOT_BOOTSCR_IMG} ${DEPLOYDIR}/boot.scr
 }
 
-addtask do_deploy after do_compile
-addtask do_create_boot_scr_sh before do_compile
+addtask do_deploy after do_compile before do_install
+addtask do_create_boot_scr_sh before do_compile after do_configure
 
 FILES:${PN} += "/boot"
 
